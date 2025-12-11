@@ -5,13 +5,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader } from "lucide-react";
+import { useCart } from "@/app/context/cartcontext";
 
 const categories = [
   "All Products",
   "smartphones",
   "laptops",
   "fragrances",
-  "skincare",
   "groceries",
   "home-decoration",
   "furniture",
@@ -26,12 +26,14 @@ const categories = [
 ];
 
 export default function ProductsPage() {
+  const { addToCart, cart } = useCart();  // ✅ USE HOOK HERE ONLY
+
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All Products");
   const [page, setPage] = useState(1);
 
-  const pageSize = 12; // products per page
+  const pageSize = 12;
 
   useEffect(() => {
     loadProducts();
@@ -41,10 +43,14 @@ export default function ProductsPage() {
     setLoading(true);
 
     try {
-      let url = `https://dummyjson.com/products?limit=${pageSize}&skip=${(page - 1) * pageSize}`;
+      let url = `https://dummyjson.com/products?limit=${pageSize}&skip=${
+        (page - 1) * pageSize
+      }`;
 
       if (activeCategory !== "All Products") {
-        url = `https://dummyjson.com/products/category/${activeCategory}?limit=${pageSize}&skip=${(page - 1) * pageSize}`;
+        url = `https://dummyjson.com/products/category/${activeCategory}?limit=${pageSize}&skip=${
+          (page - 1) * pageSize
+        }`;
       }
 
       const res = await fetch(url);
@@ -61,23 +67,22 @@ export default function ProductsPage() {
   return (
     <div className="p-6">
       {/* CATEGORY BUTTONS */}
-      <div className="flex gap-3 overflow-x-scroll pb-3 no-scrollbar ">
+      <div className="flex gap-3 overflow-x-scroll pb-3 no-scrollbar">
         {categories.map((cat) => (
           <button
-  key={cat}
-  onClick={() => {
-    setPage(1);
-    setActiveCategory(cat);
-  }}
-  className={`px-5 py-2 rounded-full font-semibold capitalize border text-md whitespace-nowrap transition ${
-    activeCategory === cat
-      ? "bg-black text-white shadow"
-      : "bg-white hover:bg-gray-100"
-  }`}
->
-  {cat}
-</button>
-
+            key={cat}
+            onClick={() => {
+              setPage(1);
+              setActiveCategory(cat);
+            }}
+            className={`px-5 py-2 rounded-full font-semibold capitalize border text-md whitespace-nowrap transition ${
+              activeCategory === cat
+                ? "bg-black text-white shadow"
+                : "bg-white hover:bg-gray-100"
+            }`}
+          >
+            {cat}
+          </button>
         ))}
       </div>
 
@@ -121,7 +126,12 @@ export default function ProductsPage() {
 
                 <p className="text-xl font-bold">${product.price}</p>
 
-                <Button className="w-full mt-3">Add to Cart</Button>
+                <Button
+                  className="w-full mt-3"
+                  onClick={() => addToCart(product)} // ✅ works now
+                >
+                  Add to Cart
+                </Button>
               </CardContent>
             </Card>
           ))}

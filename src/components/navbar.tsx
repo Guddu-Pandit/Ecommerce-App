@@ -21,8 +21,10 @@ import {
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import { useCart } from "@/app/context/cartcontext";
 
-export function Navbar() {
+export default function Navbar({ onOpenCart }: any) {
+  const { cart } = useCart();
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
    const [scrolled, setScrolled] = useState(false);
@@ -111,9 +113,18 @@ export function Navbar() {
 
       {/* RIGHT: Icons */}
       <div className="flex items-center gap-8">
-        <Link href="/cart">
-          <ShoppingCart className="cursor-pointer" size={22} />
-        </Link>
+         <button
+        className="relative p-2 border rounded-lg"
+        onClick={onOpenCart}
+      >
+        <ShoppingCart />
+
+        {cart.length > 0 && (
+          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            {cart.length}
+          </span>
+        )}
+      </button>
 
         {/* Avatar Dropdown */}
         <DropdownMenu>
