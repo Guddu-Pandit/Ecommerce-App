@@ -1,4 +1,3 @@
-import { supabase } from "@/utils/supabase/client";
 
 export default async function CartPage() {
   // Fetch cart items

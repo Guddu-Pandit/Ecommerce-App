@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader } from "lucide-react";
+import { Loader, ShoppingCart } from "lucide-react";
 import { useCart } from "@/app/context/cartcontext";
 
 const categories = [
@@ -26,7 +26,7 @@ const categories = [
 ];
 
 export default function ProductsPage() {
-  const { addToCart, cart } = useCart();  // ✅ USE HOOK HERE ONLY
+  const { addToCart, cart } = useCart(); // ✅ USE HOOK HERE ONLY
 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -124,14 +124,26 @@ export default function ProductsPage() {
                   {product.description}
                 </p>
 
-                <p className="text-xl font-bold">${product.price}</p>
-
-                <Button
-                  className="w-full mt-3"
-                  onClick={() => addToCart(product)} // ✅ works now
-                >
-                  Add to Cart
-                </Button>
+                <div className="flex justify-between px-4 items-center">
+                  <p className="text-xl font-bold">${product.price}</p>
+                
+                {cart.some((item: any) => item.id === product.id) ? (
+                  
+                  <Button
+                    className="w-fit  mt-3 cursor-pointer bg-black hover:bg-gray-800"
+                    onClick={() => (window.location.href = "/cart")}
+                  >
+                    <ShoppingCart /> View Cart
+                  </Button>
+                ) : (
+                  <Button
+                    className="w-fit cursor-pointer mt-3"
+                    onClick={() => addToCart(product)}
+                  >
+                    Add to Cart
+                  </Button>
+                )}
+                </div>
               </CardContent>
             </Card>
           ))}
