@@ -25,6 +25,16 @@ import type { User } from "@supabase/supabase-js";
 export function Navbar() {
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+   const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 5);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // FIXED: added correct type User | null
   const [user, setUser] = useState<User | null>(null);
@@ -72,7 +82,8 @@ export function Navbar() {
   };
 
   return (
-    <nav className="w-full p-4 flex items-center justify-between border-b">
+    <nav className={`w-full p-4 flex items-center justify-between border-b fixed top-0 left-0 bg-white z-50 transition-shadow duration-300
+        ${scrolled ? "shadow-md" : "shadow-none"}`}>
       {/* LEFT: Logo */}
       <Link href="/" className="flex items-center font-bold gap-2 text-2xl">
         Ecommerce App
