@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/app/context/cartcontext";
+import { toast } from "sonner";
 
 type CartItem = {
   id: number;
@@ -18,10 +19,15 @@ type CartItem = {
 
 export default function CartPage() {
   const router = useRouter();
-  const { cart = [], removeFromCart, updateQty, clearCart } = useCart();
+  const {
+    cart = [],
+    removeFromCart,
+    updateQty,
+    clearCart,
+    addOrders,
+  } = useCart();
 
-  const goToProducts = () => router.push("/products");
-  const goToOrders = () => router.push("/order");
+  const goToProducts = () => router.push("/");
 
   // SAFE subtotal
   const subtotal = cart.reduce(
@@ -35,11 +41,10 @@ export default function CartPage() {
       <div className="flex flex-col items-center justify-center min-h-screen text-center px-6">
         <ShoppingCart className="size-26 text-gray-400" />
 
-      <h2 className="text-4xl font-semibold mt-6">Your cart is empty</h2>
-      <p className="text-gray-600 font-semibold text-xl mt-2">
-        Looks like you haven't added anything to your cart yet.
-      </p>
-
+        <h2 className="text-4xl font-semibold mt-6">Your cart is empty</h2>
+        <p className="text-gray-600 font-semibold text-xl mt-2">
+          Looks like you haven't added anything to your cart yet.
+        </p>
 
         <button
           onClick={goToProducts}
@@ -151,9 +156,34 @@ export default function CartPage() {
             <span>Total</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
-
           <Button
-            onClick={goToOrders}
+            onClick={() => {
+              const processCheckout: Promise<{ name: string }> = new Promise(
+                (resolve) => {
+                  setTimeout(() => {
+                    // Save all cart items to "orders"
+                    addOrders(cart);
+
+                    // Clear cart after saving orders
+                    clearCart();
+
+                    resolve({ name: "Successfully" });
+                  }, 2000);
+                }
+              );
+
+              toast.promise(processCheckout, {
+                loading: "Processing your order...",
+                success: (data) => {
+                  setTimeout(() => {
+                    router.push("/order");
+                  }, 800);
+
+                  return `${data.name}, your order confirmed!`;
+                },
+                error: "Error during checkout",
+              });
+            }}
             className="w-full cursor-pointer h-12 text-lg"
           >
             Proceed to Checkout

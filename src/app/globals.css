@@ -127,7 +127,14 @@
 
 body{
   scrollbar-width: none; 
-
+  overflow: auto; /* allows scrolling */
+  scrollbar-width: none; /* Firefox */
+}
+body::-moz-scrollbar {
+  display: none; /* Firefox */  
+}
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 .no-scrollbar {
