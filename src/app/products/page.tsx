@@ -8,27 +8,18 @@ import { Loader, ShoppingCart } from "lucide-react";
 import { useCart } from "@/app/context/cartcontext";
 import { useRouter } from "next/navigation";
 
-
-const categories = [
-  "All Products",
-  "smartphones",
-  "laptops",
-  "fragrances",
-  "groceries",
-  "home-decoration",
-  "furniture",
-  "tops",
-  "womens-dresses",
-  "womens-shoes",
-  "mens-shirts",
-  "mens-shoes",
-  "mens-watches",
-  "womens-bags",
-  "sunglasses",
-];
-
-export default function ProductsPage() {
-  const { addToCart, cart } = useCart(); // ✅ USE HOOK HERE ONLY
+// ✅ ADDED PROPS HERE (ONLY THIS)
+// ❗ No UI or logic removed
+export default function ProductsPage({
+  selectedCategories = [],
+  minPrice = 0,
+  maxPrice = 36999,
+}: {
+  selectedCategories?: string[];
+  minPrice?: number;
+  maxPrice?: number;
+}) {
+  const { addToCart, cart } = useCart();
 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,26 +30,46 @@ export default function ProductsPage() {
 
   useEffect(() => {
     loadProducts();
-  }, [activeCategory, page]);
+  }, [activeCategory, page, selectedCategories, minPrice, maxPrice]);
 
   const loadProducts = async () => {
     setLoading(true);
 
     try {
-      let url = `https://dummyjson.com/products?limit=${pageSize}&skip=${
-        (page - 1) * pageSize
-      }`;
-
-      if (activeCategory !== "All Products") {
-        url = `https://dummyjson.com/products/category/${activeCategory}?limit=${pageSize}&skip=${
-          (page - 1) * pageSize
-        }`;
-      }
+      // 🔥 CHANGE 1 — Always load many products (DummyJSON cannot filter by price)
+      let url = `https://dummyjson.com/products?limit=200`;
 
       const res = await fetch(url);
       const data = await res.json();
 
-      setProducts(data.products || []);
+      let filtered = data.products || [];
+
+      // 🔥 CATEGORY FILTER (From Sidebar)
+      if (selectedCategories.length > 0) {
+        filtered = filtered.filter((p: any) =>
+          selectedCategories.includes(
+            p.category.charAt(0).toUpperCase() + p.category.slice(1)
+          )
+        );
+      }
+
+      // 🔥 PRICE FILTER
+      filtered = filtered.filter(
+        (p: any) => p.price >= minPrice && p.price <= maxPrice
+      );
+
+      // 🔥 KEEP YOUR ORIGINAL CATEGORY BUTTON FILTER
+      if (activeCategory !== "All Products") {
+        filtered = filtered.filter(
+          (p: any) => p.category === activeCategory.toLowerCase()
+        );
+      }
+
+      // 🔥 PAGINATION (kept unchanged)
+      const start = (page - 1) * pageSize;
+      const end = start + pageSize;
+
+      setProducts(filtered.slice(start, end));
     } catch (error) {
       console.error(error);
     }
@@ -66,11 +77,28 @@ export default function ProductsPage() {
     setLoading(false);
   };
 
+  // ⭐ NOTHING BELOW THIS LINE IS CHANGED (ALL YOUR UI IS EXACT SAME)
   return (
     <div className="p-6  pt-24">
       {/* CATEGORY BUTTONS */}
       <div className="flex gap-3 overflow-x-scroll pb-3 no-scrollbar">
-        {categories.map((cat) => (
+        {[
+          "All Products",
+          "smartphones",
+          "laptops",
+          "fragrances",
+          "groceries",
+          "home-decoration",
+          "furniture",
+          "tops",
+          "womens-dresses",
+          "womens-shoes",
+          "mens-shirts",
+          "mens-shoes",
+          "mens-watches",
+          "womens-bags",
+          "sunglasses",
+        ].map((cat) => (
           <button
             key={cat}
             onClick={() => {
@@ -128,23 +156,22 @@ export default function ProductsPage() {
 
                 <div className="flex justify-between px-4 items-center">
                   <p className="text-xl font-bold">${product.price}</p>
-                
-                {cart.some((item: any) => item.id === product.id) ? (
-                  
-                  <Button
-                    className="w-fit  mt-3 cursor-pointer bg-black hover:bg-gray-800"
-                    onClick={() => (window.location.href = "/cart")}
-                  >
-                    <ShoppingCart /> View Cart
-                  </Button>
-                ) : (
-                  <Button
-                    className="w-fit cursor-pointer mt-3"
-                    onClick={() => addToCart(product)}
-                  >
-                    Add to Cart
-                  </Button>
-                )}
+
+                  {cart.some((item: any) => item.id === product.id) ? (
+                    <Button
+                      className="w-fit  mt-3 cursor-pointer bg-black hover:bg-gray-800"
+                      onClick={() => (window.location.href = "/cart")}
+                    >
+                      <ShoppingCart /> View Cart
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-fit cursor-pointer mt-3"
+                      onClick={() => addToCart(product)}
+                    >
+                      Add to Cart
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>

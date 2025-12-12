@@ -12,25 +12,22 @@ export default function HomePage() {
 
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+
+  // FILTER STATES
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(36999);
 
-  // 🔒 CHECK LOGIN STATUS
+  // AUTH CHECK
   useEffect(() => {
     const checkUser = async () => {
       const { data } = await supabase.auth.getUser();
-
-      if (!data.user) {
-        router.push("/login"); // Redirect to login
-      } else {
-        setLoading(false); // Allow page to load
-      }
+      if (!data.user) router.push("/login");
+      else setLoading(false);
     };
-
     checkUser();
   }, []);
 
-  // Prevent UI flashing before redirect
   if (loading) {
     return (
       <div className="p-10 text-center text-xl font-semibold">
@@ -55,26 +52,21 @@ export default function HomePage() {
     "Skin-Care",
   ];
 
+  const toggleCategory = (cat: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+    );
+  };
+
   const min = 0;
   const max = 36999;
 
   const minPercent = (minPrice / max) * 100;
   const maxPercent = (maxPrice / max) * 100;
 
-  const handleMinChange = (e: any) => {
-    const value = Number(e.target.value);
-    if (value <= maxPrice) setMinPrice(value);
-  };
-
-  const handleMaxChange = (e: any) => {
-    const value = Number(e.target.value);
-    if (value >= minPrice) setMaxPrice(value);
-  };
-
   return (
     <div className="overflow-x-hidden">
-
-      {/* DARK OVERLAY */}
+      {/* OVERLAY */}
       {open && (
         <div
           className="fixed inset-0 bg-black/40 z-50"
@@ -84,11 +76,11 @@ export default function HomePage() {
 
       {/* FILTER SIDEBAR */}
       <div
-        className={`fixed top-0 left-0 h-full w-[420px] max-w-[90%] z-50 transform transition-transform duration-300
-        ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed top-0 left-0 h-full w-[420px] max-w-[90%] z-50 transform transition-transform duration-300 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
         <div className="h-full bg-white shadow-xl p-6 flex flex-col">
-
           {/* HEADER */}
           <div className="flex justify-between items-start mb-4">
             <div>
@@ -104,16 +96,20 @@ export default function HomePage() {
             </button>
           </div>
 
-          {/* SCROLLABLE CONTENT */}
-          <div className="overflow-y-auto pr-2 space-y-6 scrollbar-thin scrollbar-thumb-gray-300 flex-1">
-
-            {/* Categories */}
+          {/* SCROLL CONTENT */}
+          <div className="overflow-y-auto pr-2 space-y-6 flex-1">
+            {/* CATEGORY FILTER */}
             <div>
               <h3 className="text-lg font-semibold mb-2">Categories</h3>
               <div className="space-y-3">
                 {categories.map((cat) => (
                   <label key={cat} className="flex items-center space-x-3">
-                    <input type="checkbox" className="w-5 h-5" />
+                    <input
+                      type="checkbox"
+                      className="w-5 h-5"
+                      checked={selectedCategories.includes(cat)}
+                      onChange={() => toggleCategory(cat)}
+                    />
                     <span>{cat}</span>
                   </label>
                 ))}
@@ -126,11 +122,8 @@ export default function HomePage() {
 
               {/* Dual Slider */}
               <div className="relative w-full h-8">
-
-                {/* Track background */}
                 <div className="absolute top-1/2 -translate-y-1/2 w-full h-1 bg-gray-300 rounded"></div>
 
-                {/* Active range highlight */}
                 <div
                   className="absolute top-1/2 -translate-y-1/2 h-1 bg-black rounded"
                   style={{
@@ -139,29 +132,24 @@ export default function HomePage() {
                   }}
                 ></div>
 
-                {/* MIN THUMB */}
                 <input
                   type="range"
                   min={min}
                   max={max}
                   value={minPrice}
-                  onChange={handleMinChange}
-                  className="absolute inset-0 pointer-events-none w-full appearance-none bg-transparent"
-                  style={{ zIndex: minPrice > max - 5000 ? 5 : 3 }}
+                  onChange={(e) => setMinPrice(Number(e.target.value))}
+                  className="absolute inset-0 pointer-events-none w-full bg-transparent"
                 />
 
-                {/* MAX THUMB */}
                 <input
                   type="range"
                   min={min}
                   max={max}
                   value={maxPrice}
-                  onChange={handleMaxChange}
-                  className="absolute inset-0 pointer-events-none w-full appearance-none bg-transparent"
-                  style={{ zIndex: 4 }}
+                  onChange={(e) => setMaxPrice(Number(e.target.value))}
+                  className="absolute inset-0 pointer-events-none w-full bg-transparent"
                 />
 
-                {/* CUSTOM THUMB STYLE */}
                 <style jsx>{`
                   input[type="range"]::-webkit-slider-thumb {
                     pointer-events: auto;
@@ -175,19 +163,15 @@ export default function HomePage() {
                 `}</style>
               </div>
 
-              {/* Values */}
               <div className="flex justify-between text-gray-700 text-sm font-medium mt-4">
                 <span>${minPrice}</span>
                 <span>—</span>
                 <span>${maxPrice}</span>
               </div>
 
-              {/* Apply Button */}
               <button
-                onClick={() =>
-                  console.log("APPLY FILTER", minPrice, maxPrice)
-                }
-                className="w-full bg-black cursor-pointer hover:bg-gray-800 text-white py-3 rounded-xl mt-4 font-semibold"
+                onClick={() => setOpen(false)}
+                className="w-full bg-black hover:bg-gray-800 text-white py-3 rounded-xl mt-4 font-semibold"
               >
                 Apply Filter
               </button>
@@ -196,10 +180,14 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* MAIN PAGE */}
-      <ProductsPage />
+      {/* MAIN PRODUCT PAGE */}
+      <ProductsPage
+        selectedCategories={selectedCategories}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+      />
 
-      {/* FUNNEL BUTTON */}
+      {/* OPEN FILTER BUTTON */}
       {!open && (
         <div
           onClick={() => setOpen(true)}
