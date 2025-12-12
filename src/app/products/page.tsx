@@ -67,7 +67,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6  pt-24">
       {/* CATEGORY BUTTONS */}
       <div className="flex gap-3 overflow-x-scroll pb-3 no-scrollbar">
         {categories.map((cat) => (
