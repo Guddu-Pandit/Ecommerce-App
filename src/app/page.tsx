@@ -1,13 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BotMessageSquare, Funnel, X } from "lucide-react";
 import ProductsPage from "./products/page";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
 
 export default function HomePage() {
+  const router = useRouter();
+  const supabase = createClient();
+
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(36999);
+
+  // 🔒 CHECK LOGIN STATUS
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getUser();
+
+      if (!data.user) {
+        router.push("/login"); // Redirect to login
+      } else {
+        setLoading(false); // Allow page to load
+      }
+    };
+
+    checkUser();
+  }, []);
+
+  // Prevent UI flashing before redirect
+  if (loading) {
+    return (
+      <div className="p-10 text-center text-xl font-semibold">
+        Checking authentication...
+      </div>
+    );
+  }
 
   const categories = [
     "Beauty",
