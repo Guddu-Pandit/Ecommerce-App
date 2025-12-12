@@ -28,9 +28,7 @@ const categories = [
 ];
 
 export default function ProductsPage() {
-  const { addToCart, cart } = useCart(); // USE HOOK HERE ONLY
-  const router = useRouter();
-
+  const { addToCart, cart } = useCart(); // ✅ USE HOOK HERE ONLY
 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

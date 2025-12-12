@@ -8,6 +8,7 @@ import {
   LoaderCircleIcon,
   ShoppingCart,
   LogOut,
+  Package,
 } from "lucide-react";
 import { useId, useState, useEffect } from "react";
 import {
@@ -150,13 +151,19 @@ export default function Navbar({ onOpenCart }: any) {
               {fullName}
               <p className="text-sm text-muted-foreground">{user?.email}</p>
             </DropdownMenuLabel>
+             <DropdownMenuItem
+              onClick={() => router.push("/order")}
+              className=" font-semibold text-1xl text-gray-800 flex cursor-pointer"
+            >
+              <Package />Orders
+            </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
             {/* Logout */}
             <DropdownMenuItem
               onClick={handleLogout}
-              className="text-red-600 cursor-pointer"
+              className="text-red-600 font-semibold cursor-pointer"
             >
               <LogOut size={20} className="mr-2" /> Logout
             </DropdownMenuItem>

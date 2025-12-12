@@ -14,6 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="antialiased pt-22">
         <CartProvider >
+          
           <NavbarWrapper />
           {children}
           <Toaster position="top-center" richColors />

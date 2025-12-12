@@ -129,6 +129,7 @@ body{
   scrollbar-width: none; 
   overflow: auto; /* allows scrolling */
   scrollbar-width: none; /* Firefox */
+
 }
 body::-moz-scrollbar {
   display: none; /* Firefox */  
@@ -140,4 +141,53 @@ body::-webkit-scrollbar {
 .no-scrollbar {
   -ms-overflow-style: none; /* IE */
   scrollbar-width: none; /* Firefox */
+}
+@layer base {
+  :root {
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+  }
+
+  .dark {
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.439 0 0);
+  }
+}
+
+.slider-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  background: white;
+  border: 3px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.slider-thumb::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  background: white;
+  border: 3px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.slider-thumb {
+  pointer-events: auto !important;
 }
