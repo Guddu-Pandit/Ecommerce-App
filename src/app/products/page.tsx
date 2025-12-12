@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader, ShoppingCart } from "lucide-react";
 import { useCart } from "@/app/context/cartcontext";
+import { useRouter } from "next/navigation";
+
 
 const categories = [
   "All Products",
@@ -26,7 +28,9 @@ const categories = [
 ];
 
 export default function ProductsPage() {
-  const { addToCart, cart } = useCart(); // ✅ USE HOOK HERE ONLY
+  const { addToCart, cart } = useCart(); // USE HOOK HERE ONLY
+  const router = useRouter();
+
 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

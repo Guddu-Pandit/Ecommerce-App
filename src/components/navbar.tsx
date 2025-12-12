@@ -128,16 +128,21 @@ export default function Navbar({ onOpenCart }: any) {
 
 
         {/* Avatar Dropdown */}
-        <DropdownMenu>
+        <DropdownMenu > 
           <DropdownMenuTrigger asChild>
-            <Image
-              src={avatar}
-              width={45}
-              height={45}
-              alt="User"
-              className="rounded-full cursor-pointer border shadow"
-            />
-          </DropdownMenuTrigger>
+  <button
+    type="button"
+    className="rounded-full p-0 border-none outline-none cursor-pointer"
+  >
+    <Image
+      src={avatar}
+      width={45}
+      height={45}
+      alt="User"
+      className="rounded-full border shadow"
+    />
+  </button>
+</DropdownMenuTrigger>
 
           <DropdownMenuContent align="end" className="w-60">
             {/* User Name */}

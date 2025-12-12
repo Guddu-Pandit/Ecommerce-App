@@ -125,6 +125,11 @@
   display: none;
 }
 
+body{
+  scrollbar-width: none; 
+
+}
+
 .no-scrollbar {
   -ms-overflow-style: none; /* IE */
   scrollbar-width: none; /* Firefox */
