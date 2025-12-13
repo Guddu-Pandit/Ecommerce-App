@@ -48,7 +48,7 @@ console.log("Login response:", data, error);
       }
 
       // Successfully logged in
-      window.location.href = "/";
+      window.location.href = "/homepage";
     };
 
     // -------------------------
