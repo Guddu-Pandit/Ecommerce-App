@@ -6,9 +6,7 @@ export async function POST(req: Request) {
 
     const productSummary = products
       .slice(0, 50)
-      .map(
-        (p: any) => `• ${p.title} | ₹${p.price} | ${p.category}`
-      )
+      .map((p: any) => `• ${p.title} | ₹${p.price} | ${p.category}`)
       .join("\n");
 
     const prompt = `

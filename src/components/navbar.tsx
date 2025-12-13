@@ -28,7 +28,7 @@ export default function Navbar({ onOpenCart }: any) {
   const { cart } = useCart();
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-   const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,8 +85,10 @@ export default function Navbar({ onOpenCart }: any) {
   };
 
   return (
-    <nav className={`w-full p-4 flex items-center justify-between border-b fixed top-0 left-0 bg-white z-50 transition-shadow duration-300
-        ${scrolled ? "shadow-md" : "shadow-none"}`}>
+    <nav
+      className={`w-full p-4 flex items-center justify-between border-b fixed top-0 left-0 bg-white z-50 transition-shadow duration-300
+        ${scrolled ? "shadow-md" : "shadow-none"}`}
+    >
       {/* LEFT: Logo */}
       <Link href="/" className="flex items-center font-bold gap-2 text-2xl">
         Ecommerce App
@@ -115,35 +117,34 @@ export default function Navbar({ onOpenCart }: any) {
       {/* RIGHT: Icons */}
       <div className="flex items-center gap-8">
         <button
-  className="relative p-2 border-none rounded-lg cursor-pointer hover:bg-gray-100 transition"
-  onClick={() => router.push("/cart")}
->
-  <ShoppingCart />
+          className="relative p-2 border-none rounded-lg cursor-pointer hover:bg-gray-100 transition"
+          onClick={() => router.push("/cart")}
+        >
+          <ShoppingCart />
 
-  {cart.length > 0 && (
-    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs  rounded-full w-5 h-5 flex items-center justify-center">
-      {cart.length}
-    </span>
-  )}
-</button>
-
+          {cart.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs  rounded-full w-5 h-5 flex items-center justify-center">
+              {cart.length}
+            </span>
+          )}
+        </button>
 
         {/* Avatar Dropdown */}
-        <DropdownMenu > 
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
-  <button
-    type="button"
-    className="rounded-full p-0 border-none outline-none cursor-pointer"
-  >
-    <Image
-      src={avatar}
-      width={45}
-      height={45}
-      alt="User"
-      className="rounded-full border shadow"
-    />
-  </button>
-</DropdownMenuTrigger>
+            <button
+              type="button"
+              className="rounded-full p-0 border-none outline-none cursor-pointer"
+            >
+              <Image
+                src={avatar}
+                width={45}
+                height={45}
+                alt="User"
+                className="rounded-full border shadow"
+              />
+            </button>
+          </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end" className="w-60">
             {/* User Name */}
@@ -151,11 +152,12 @@ export default function Navbar({ onOpenCart }: any) {
               {fullName}
               <p className="text-sm text-muted-foreground">{user?.email}</p>
             </DropdownMenuLabel>
-             <DropdownMenuItem
+            <DropdownMenuItem
               onClick={() => router.push("/order")}
               className=" font-semibold text-1xl text-gray-800 flex cursor-pointer"
             >
-              <Package />Orders
+              <Package />
+              Orders
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />

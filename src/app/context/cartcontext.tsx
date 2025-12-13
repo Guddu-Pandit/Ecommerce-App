@@ -45,9 +45,7 @@ export function CartProvider({ children }: any) {
   const clearCart = () => setCart([]);
 
   const updateQty = (id: number, qty: number) =>
-    setCart((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, qty } : p))
-    );
+    setCart((prev) => prev.map((p) => (p.id === id ? { ...p, qty } : p)));
 
   const addOrders = (cartItems: any[]) => {
     const newOrders = cartItems.map((item) => ({
@@ -85,7 +83,7 @@ export function CartProvider({ children }: any) {
         updateQty,
         addOrders,
         clearOrders,
-        removeOrder,  
+        removeOrder,
         setCart,
         setOrders,
       }}
