@@ -48,7 +48,7 @@ console.log("Login response:", data, error);
       }
 
       // Successfully logged in
-      window.location.href = "/homepage";
+      window.location.href = "/";
     };
 
     // -------------------------
@@ -59,7 +59,7 @@ console.log("Login response:", data, error);
         await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
-            redirectTo: `/`,
+            redirectTo: `/homepage`,
           },
         });
       } catch (err) {
