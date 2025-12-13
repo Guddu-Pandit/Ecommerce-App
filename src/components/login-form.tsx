@@ -59,7 +59,7 @@ console.log("Login response:", data, error);
         await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
-            redirectTo: `/homepage`,
+            redirectTo: `/`,
           },
         });
       } catch (err) {
