@@ -74,3 +74,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## ⚖️ License
 
 This project is licensed under the MIT License.
+
+---
+
+Developed with ❤️ by [Guddu-Pandit](https://github.com/Guddu-Pandit)
