@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛒 Modern E-Commerce App with AI Assistant
 
-## Getting Started
+Welcome to the **Modern E-Commerce App**, a high-performance web application built with **Next.js 16**, **Tailwind CSS 4**, and **Supabase**. This project features a built-in AI Shopping Assistant powered by **Google Gemini** to help users find the perfect products.
 
-First, run the development server:
+## ✨ Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **🛍️ Product Discovery**: Browse a wide range of products with advanced filtering by category and price.
+- **🤖 AI Shopping Assistant**: Integrated chatbot powered by Google Gemini AI to assist with product queries and recommendations.
+- **🔐 Secure Authentication**: User sign-up and login powered by Supabase Auth.
+- **🛒 Dynamic Cart**: Seamless shopping experience with a slide-out cart drawer.
+- **🎨 Premium UI/UX**: Crafted with Tailwind CSS 4 and Radix UI components for a modern, responsive, and accessible interface.
+- **🌓 Dark Mode Support**: Smooth theme switching for a comfortable viewing experience.
+
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Backend/Auth**: [Supabase](https://supabase.com/)
+- **AI Engine**: [Google Generative AI (Gemini)](https://ai.google.dev/)
+- **Components**: [Radix UI](https://www.radix-ui.com/) & [Lucide React Icons](https://lucide.dev/)
+- **State Management**: React Hooks & Context API
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+- Node.js 20.x or later
+- A Supabase account and project
+- A Google Gemini API Key
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone <your-repo-url>
+   cd ecommerce-app
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Set up Environment Variables**:
+   Create a `.env.local` file in the root directory and add your credentials:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   GEMINI_API_KEY=your_gemini_api_key
+   ```
+
+4. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📂 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+src/
+├── app/          # Next.js App Router (pages and layouts)
+├── components/   # Reusable UI components (Navbar, Cart, Chatbot)
+├── utils/        # Utility functions (Supabase clients)
+├── hooks/        # Custom React hooks
+└── lib/          # Shared library code
+```
 
-## Learn More
+## 🤝 Contributing
 
-To learn more about Next.js, take a look at the following resources:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⚖️ License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.
